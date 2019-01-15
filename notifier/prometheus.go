@@ -38,9 +38,9 @@ func BuildDingTalkNotification(promMessage *models.WebhookMessage) (*models.Ding
 			Title: title,
 			Text:  content,
 		},
-		At:&models.DingTalkNotificationAt{
+		At: &models.DingTalkNotificationAt{
 			AtMobiles: []string{strmobile},
-			IsAtAll: false,
+			IsAtAll:   false,
 		},
 	}
 	return notification, nil
