@@ -20,6 +20,10 @@ func BuildDingTalkNotification(promMessage *models.WebhookMessage) (*models.Ding
 	if err != nil {
 		return nil, err
 	}
+	atmobiles, err := template.ExecuteTextString(`{{ template "ding.link.at" . }}`, promMessage)
+	if err != nil {
+		return nil, err
+	}
 	var buttons []models.DingTalkNotificationButton
 	for i, alert := range promMessage.Alerts.Firing() {
 		buttons = append(buttons, models.DingTalkNotificationButton{
@@ -33,6 +37,10 @@ func BuildDingTalkNotification(promMessage *models.WebhookMessage) (*models.Ding
 		Markdown: &models.DingTalkNotificationMarkdown{
 			Title: title,
 			Text:  content,
+		},
+		At:&models.DingTalkNotificationMarkdown{
+			AtMobiles: atmobiles,
+			IsAtAll: false
 		},
 	}
 	return notification, nil
