@@ -17,8 +17,9 @@ PROMU        := ./promu
 
 PREFIX                  ?= ./release/
 GOFMT_FILES             ?= $$(find . -name '*.go' | grep -v vendor)
+VERSIONINFO 			?= $$(cat VERSION|sed "s/\r//g"|sed "s/\n//g")
 
-all: format build 
+all: format build tarzip
 
 linux: format buildlinux
 format:
@@ -28,13 +29,13 @@ format:
 build:
 	@echo ">> building binaries"
 	@$(PROMU) build --prefix $(PREFIX)
-
-buildlinux:
-	@echo ">> building binaries"
-	@$(PROMU) build --prefix $(PREFIX) crossbuild linux/amd64
 	
 # Will build both the front-end as well as the back-end
 build-all: build
 
+tarzip:
+	@echo ">> tar zip"
+	@echo prometheus-webhook-dingtalk-$(VERSIONINFO).tgz
+	@tar -zcvf prometheus-webhook-dingtalk-$(VERSIONINFO).tgz release/*
 
 .PHONY: all format build build-all
