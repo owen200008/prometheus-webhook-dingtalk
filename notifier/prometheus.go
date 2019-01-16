@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
-
 	"github.com/pkg/errors"
 	"github.com/timonwong/prometheus-webhook-dingtalk/models"
 	"github.com/timonwong/prometheus-webhook-dingtalk/template"
+	"net/http"
+	"strings"
 )
 
 func BuildDingTalkNotification(promMessage *models.WebhookMessage) (*models.DingTalkNotification, error) {
@@ -20,10 +20,28 @@ func BuildDingTalkNotification(promMessage *models.WebhookMessage) (*models.Ding
 	if err != nil {
 		return nil, err
 	}
+
 	ayMobiles, err := template.ExecuteMultiString(`{{ template "ding.link.at" . }}`, promMessage)
 	if err != nil {
 		return nil, err
 	}
+	sizeMobile := len(ayMobiles)
+	ayMobilesContent := ""
+	for i := 0; i < sizeMobile; i++ {
+		ayMobiles[i] = strings.TrimSpace(ayMobiles[i])
+		ayMobiles[i] = strings.Trim(ayMobiles[i], "\r\n")
+		ayMobiles[i] = strings.Trim(ayMobiles[i], "\n")
+		ayMobilesContent += "@" + ayMobiles[i] + " "
+	}
+
+	setAtAllUse := false
+	if sizeMobile == 0 || (sizeMobile == 1 && len(ayMobiles[0]) == 0) {
+		setAtAllUse = true
+		ayMobilesContent = ""
+	} else {
+		ayMobilesContent += "\r\n"
+	}
+
 	var buttons []models.DingTalkNotificationButton
 	for i, alert := range promMessage.Alerts.Firing() {
 		buttons = append(buttons, models.DingTalkNotificationButton{
@@ -36,11 +54,11 @@ func BuildDingTalkNotification(promMessage *models.WebhookMessage) (*models.Ding
 		MessageType: "markdown",
 		Markdown: &models.DingTalkNotificationMarkdown{
 			Title: title,
-			Text:  content,
+			Text:  ayMobilesContent + content,
 		},
 		At: &models.DingTalkNotificationAt{
 			AtMobiles: ayMobiles,
-			IsAtAll:   false,
+			IsAtAll:   setAtAllUse,
 		},
 	}
 	return notification, nil

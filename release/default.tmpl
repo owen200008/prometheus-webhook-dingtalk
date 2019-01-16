@@ -14,17 +14,18 @@
 
 {{ define "ding.link.title" }}{{ template "__subject" . }}{{ end }}
 {{ define "ding.link.content" }}
-{{ if .MatchRegexp .GroupLabels.alertname "relay.*"}}
-@13456711254
-{{ else if .MatchRegexp .GroupLabels.alertname "server.*"}}
-@13567117214
-{{ else if .MatchRegexp .GroupLabels.alertname "test.*"}}
-@13456711254 @13567117214
-{{ else }}
-{{ end }}
 #### \[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}\] **[{{ index .GroupLabels "alertname" }}]({{ template "__alertmanagerURL" . }})**
 {{ template "__text_alert_list" .Alerts.Firing }}
 {{ end }}
-{{ define "ding.link.at"}} 13456711254,13567117214
+
+
+{{ define "ding.link.at"}}
+{{ if .MatchRegexp .GroupLabels.alertname "relay.*"}}
+13456711254
+{{ else if .MatchRegexp .GroupLabels.alertname "server.*"}}
+13567117214
+{{ else if .MatchRegexp .GroupLabels.alertname "test.*"}}
+13456711254,13567117214
+{{ end }}
 {{ end }}
 
