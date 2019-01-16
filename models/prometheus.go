@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	"regexp"
 	"sort"
 	"time"
 )
@@ -135,4 +136,9 @@ type WebhookMessage struct {
 	// The protocol version.
 	Version  string           `json:"version"`
 	GroupKey *json.RawMessage `json:"groupKey"`
+}
+
+func (dt Data) MatchRegexp(data string, regexpinfo string) bool {
+	match, _ := regexp.MatchString(regexpinfo, data)
+	return match
 }

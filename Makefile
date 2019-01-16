@@ -12,11 +12,11 @@
 # limitations under the License.
 
 GO           := GO15VENDOREXPERIMENT=1 go
-FIRST_GOPATH := $(firstword $(subst :, ,$(shell $(GO) env GOPATH)))
+FIRST_GOPATH := ./
 PROMU        := ./promu
 
-PREFIX                  ?= ./
-GOFMT_FILES             ?= $$(C:/cygwin64/bin/find . -name '*.go' | grep -v vendor)
+PREFIX                  ?= ./release/
+GOFMT_FILES             ?= $$(find . -name '*.go' | grep -v vendor)
 
 all: format build 
 
@@ -35,7 +35,6 @@ buildlinux:
 	
 # Will build both the front-end as well as the back-end
 build-all: build
-
 
 
 .PHONY: all format build build-all

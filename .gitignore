@@ -5,3 +5,5 @@
 *.tar.gz
 coverage.txt
 /prometheus-webhook-dingtalk
+/release/prometheus-webhook-dingtalk*
+Makefile-win

@@ -106,3 +106,11 @@ func ExecuteTextString(text string, data interface{}) (string, error) {
 	err = tmpl.Execute(&buf, data)
 	return buf.String(), err
 }
+
+func ExecuteMultiString(text string, data interface{}) ([]string, error) {
+	retcontent, errorcode := ExecuteTextString(text, data)
+	if errorcode != nil {
+		return []string{}, errorcode
+	}
+	return strings.Split(retcontent, ","), errorcode
+}

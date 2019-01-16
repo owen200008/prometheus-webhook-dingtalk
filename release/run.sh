@@ -1,0 +1,1 @@
+./prometheus-webhook-dingtalk --ding.profile="ops_dingding=@url"  --template.file="default.tmpl" --web.listen-address=":8060"

@@ -10,6 +10,9 @@ Generating [DingTalk] notification from [Prometheus] [AlertManager] WebHooks.
 make
 ```
 
+其实make是编译不过的，里面用到了promu相关的信息，目前对promu工具不是特别了解（尝试过很多次，如果有人解决请教我下谢谢89424516@qq.com），因此建议按go src目录clone下来编译
+go/src/github.com/timonwong/prometheus-webhook-dingtalk
+
 ### Running
 
 ```bash
@@ -34,15 +37,10 @@ Flags:
 
 ```
 
-## Using Docker
+### Build
+扩展了目前的功能
+0.3.1 
+	1.支持at到用户的操作
+	2.支持多用户at，调号分割
+	3.tmpl支持基于字符串的正则函数，用于收敛预警消息到用户
 
-You can deploy this tool using the Docker image from following registry:
-
-* [DockerHub]\: [timonwong/prometheus-webhook-dingtalk](https://registry.hub.docker.com/u/timonwong/prometheus-webhook-dingtalk/)
-* [Quay.io]\: [timonwong/prometheus-webhook-dingtalk](https://quay.io/repository/timonwong/prometheus-webhook-dingtalk)
-
-[Prometheus]: https://prometheus.io
-[AlertManager]: https://github.com/prometheus/alertmanager
-[DingTalk]: https://www.dingtalk.com
-[DockerHub]: https://hub.docker.com
-[Quay.io]: https://quay.io

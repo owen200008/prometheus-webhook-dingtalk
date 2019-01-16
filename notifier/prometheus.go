@@ -20,7 +20,7 @@ func BuildDingTalkNotification(promMessage *models.WebhookMessage) (*models.Ding
 	if err != nil {
 		return nil, err
 	}
-	strmobile, err := template.ExecuteTextString(`{{ template "ding.link.at" . }}`, promMessage)
+	ayMobiles, err := template.ExecuteMultiString(`{{ template "ding.link.at" . }}`, promMessage)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func BuildDingTalkNotification(promMessage *models.WebhookMessage) (*models.Ding
 			Text:  content,
 		},
 		At: &models.DingTalkNotificationAt{
-			AtMobiles: []string{strmobile},
+			AtMobiles: ayMobiles,
 			IsAtAll:   false,
 		},
 	}
